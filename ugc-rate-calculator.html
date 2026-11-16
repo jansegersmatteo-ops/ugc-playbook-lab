@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UGC Rate Calculator 2026: Price Your Videos, Hooks and Usage Rights</title><meta name="description" content="Free UGC rate calculator: enter your base rate, add hooks, raw footage and usage rights (paid ads, whitelisting, buyout) and get a price range based on 2026 market data."><link rel="canonical" href="https://jansegersmatteo-ops.github.io/ugc-playbook-lab/ugc-rate-calculator.html">
+<meta property="og:title" content="UGC Rate Calculator 2026: Price Your Videos, Hooks and Usage Rights"><meta property="og:description" content="Free UGC rate calculator: enter your base rate, add hooks, raw footage and usage rights (paid ads, whitelisting, buyout) and get a price range based on 2026 market data."><meta property="og:type" content="article">
+<link rel="stylesheet" href="style.css"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "UGC Rate Calculator 2026: Price Your Videos, Hooks and Usage Rights", "description": "Free UGC rate calculator: enter your base rate, add hooks, raw footage and usage rights (paid ads, whitelisting, buyout) and get a price range based on 2026 market data.", "datePublished": "2026-11-16", "dateModified": "2026-11-16", "author": {"@type": "Organization", "name": "UGC Playbook Lab"}, "url": "https://jansegersmatteo-ops.github.io/ugc-playbook-lab/ugc-rate-calculator.html"}</script></head><body>
+<header><div class="w"><span class="logo"></span><a href="./">UGC Playbook Lab</a></div></header>
+<main><div class="w"><p class="meta">Updated 2026-11-16 · free tool</p><h1>UGC rate calculator</h1>
+<p>Turn your base rate into a full quote. Add videos, extra hooks, raw footage and usage rights, and see a price range built on typical 2026 add-ons. It's a starting point for your quote, not a forecast of what you'll earn.</p>
+<style>
+.calc{border:1px solid #e6e6ea;border-radius:14px;padding:20px;margin:24px 0;background:#fafafb}
+.calc label{display:block;font-weight:600;margin:14px 0 4px}
+.calc input,.calc select{width:100%;padding:10px;border:1px solid #d4d4dc;border-radius:8px;font:inherit;background:#fff}
+.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc .hint{font-size:.85rem;color:#6b6b78;margin-top:4px}
+.out{background:#111118;color:#fff;border-radius:12px;padding:18px;margin-top:18px}
+.out .big{font-size:2rem;font-weight:800;color:#ff5c39}
+.out ul{margin:8px 0 0;padding-left:18px;color:#c9c9d3;font-size:.92rem}
+@media(max-width:560px){.calc .row{grid-template-columns:1fr}}
+</style>
+<div class="calc" id="calc">
+<label for="base">Your base rate per video (USD, organic use, 1 hook)</label>
+<input id="base" type="number" min="0" step="5" value="100">
+<div class="hint">Market reference: median posted offer $100, half between $50 and $200 (Pitchlo, 645 briefs). See <a href="ugc-rates-2026.html">UGC rates 2026</a>.</div>
+<div class="row">
+<div><label for="videos">Number of videos</label><input id="videos" type="number" min="1" step="1" value="1"></div>
+<div><label for="pack">Package discount (3+ videos)</label><select id="pack"><option value="0">None</option><option value="10" selected>10%</option><option value="15">15%</option></select></div>
+</div>
+<div class="row">
+<div><label for="hooks">Extra hooks (total)</label><input id="hooks" type="number" min="0" step="1" value="0"></div>
+<div><label for="hookp">Price per extra hook (USD)</label><input id="hookp" type="number" min="0" step="5" value="25"></div>
+</div>
+<div class="row">
+<div><label for="raw">Raw footage</label><select id="raw"><option value="0">Not included</option><option value="1">Included (add fee)</option></select></div>
+<div><label for="rawp">Raw footage fee (USD)</label><input id="rawp" type="number" min="0" step="5" value="50"></div>
+</div>
+<label for="usage">Usage rights</label>
+<select id="usage">
+<option value="0,0,0">Organic only (included)</option>
+<option value="15,30,1">Paid ads, per 30 days (+15–30%)</option>
+<option value="25,50,1">Whitelisting / Spark Ads, per 30 days (+25–50%)</option>
+<option value="70,100,0">12 months usage (+70–100%)</option>
+<option value="150,300,0">Perpetual buyout (+150–300%)</option>
+</select>
+<div class="row" id="monthsRow" style="display:none"><div><label for="months">Number of 30-day periods</label><input id="months" type="number" min="1" step="1" value="1"></div><div></div></div>
+<div class="hint">Add-on ranges: Billo's published usage-rights guidance, applied to the video fee.</div>
+<div class="out" aria-live="polite"><div>Suggested quote</div><div class="big" id="total">$100</div><ul id="lines"></ul></div>
+</div>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+function calc(){
+ const base=Math.max(0,+$('base').value||0), v=Math.max(1,Math.floor(+$('videos').value||1));
+ const disc=v>=3?(+$('pack').value||0):0;
+ const videoFee=base*v*(1-disc/100);
+ const hooks=Math.max(0,+$('hooks').value||0)*Math.max(0,+$('hookp').value||0);
+ const raw=$('raw').value==='1'?Math.max(0,+$('rawp').value||0):0;
+ const [lo,hi,perMonth]=$('usage').value.split(',').map(Number);
+ $('monthsRow').style.display=perMonth?'grid':'none';
+ const m=perMonth?Math.max(1,Math.floor(+$('months').value||1)):1;
+ const uLo=videoFee*lo/100*m, uHi=videoFee*hi/100*m;
+ const tLo=videoFee+hooks+raw+uLo, tHi=videoFee+hooks+raw+uHi;
+ $('total').textContent=tLo===tHi?fmt(tLo):fmt(tLo)+' – '+fmt(tHi);
+ const L=[v+' video'+(v>1?'s':'')+' × '+fmt(base)+(disc?' − '+disc+'% package':'')+': '+fmt(videoFee)];
+ if(hooks)L.push('Extra hooks: '+fmt(hooks));
+ if(raw)L.push('Raw footage: '+fmt(raw));
+ if(hi)L.push('Usage rights'+(perMonth?' ('+m+' × 30 days)':'')+': '+(lo===hi?fmt(uLo):fmt(uLo)+' – '+fmt(uHi)));
+ $('lines').innerHTML=L.map(x=>'<li>'+x+'</li>').join('');
+}
+document.querySelectorAll('#calc input,#calc select').forEach(e=>e.addEventListener('input',calc));
+calc();
+})();
+</script>
+<h2>How to use the result</h2>
+<ul><li><strong>Quote a range, sign a number.</strong> Use the low end for a first client or a package, the high end when the brand wants long or exclusive usage.</li>
+<li><strong>Put usage in writing.</strong> Where the video runs, for how long, and from whose account. Our <a href="ugc-usage-rights-explained.html">usage rights guide</a> has a plain-English clause.</li>
+<li><strong>Price extras separately.</strong> Extra hooks and raw footage are real extra work; listing them keeps your base rate clean.</li></ul>
+<h2>Where the numbers come from</h2>
+<p>The default base rate of $100 is the median per-video offer in Pitchlo's report of 645 briefs (Dec 2025 – Oct 2026). The usage-rights percentages are Billo's typical add-ons. Hook and raw-footage defaults are placeholders: change them to your own prices. Rates vary a lot by niche, experience and country.</p>
+<h2>Next step</h2><p>Have your number? Send it with a short, specific pitch: see our <a href="ugc-pitch-email-template.html">UGC pitch email templates</a>.</p><div class="cta"><h3>Free: 50 AI prompts for UGC creators</h3><p>Copy-paste prompts for hooks, scripts and brand pitches, plus your first UGC script in 15 minutes.</p><a class="btn" href="https://whop.com/ugc-playbook-lab/free-50-ai-prompts-for-ugc/">Get the free prompt pack</a></div><h2>Sources</h2><ul class='src'><li><a href='https://knowlify.com/articles/ugc-creator-rates' rel='nofollow noopener'>Knowlify: UGC creator rates 2026 (Pitchlo data)</a></li><li><a href='https://billo.app/blog/ugc-rates/' rel='nofollow noopener'>Billo: UGC rates and usage rights</a></li></ul></div></main>
+<footer><div class="w">UGC Playbook Lab · honest guides for UGC creators · <a href="./">All guides</a> · <a href="affiliates.html">Affiliates</a><br>No income promises: rates are third-party market data, not a forecast of what you will earn.</div></footer></body></html>
