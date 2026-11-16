@@ -4,18 +4,18 @@
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#111118;color:#fff;overflow:hidden}
-.c{position:fixed;inset:0;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;padding:5vh 6vw;gap:4vw;
+.c{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:177.78vh;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;padding:5vh calc(6*1.7778vh);gap:calc(4*1.7778vh);
 background:radial-gradient(circle at 85% 20%,rgba(255,92,57,.35),transparent 45%),radial-gradient(circle at 10% 90%,rgba(255,92,57,.18),transparent 40%),#111118}
-.brand{display:flex;align-items:center;gap:.8vw;font-weight:700;font-size:1.6vw;color:#d9d9e3;margin-bottom:3vh}
-.logo{width:2.6vw;height:2.6vw;border-radius:.7vw;background:#ff5c39;display:grid;place-items:center}
-.logo:after{content:"";border-left:.9vw solid #fff;border-top:.6vw solid transparent;border-bottom:.6vw solid transparent;margin-left:.2vw}
-.tag{display:inline-block;background:#ff5c39;color:#fff;font-weight:800;font-size:1.3vw;letter-spacing:.08em;text-transform:uppercase;padding:.6vh 1vw;border-radius:.5vw;margin-bottom:2.5vh}
-h1{font-size:4.6vw;line-height:1.05;font-weight:850;letter-spacing:-.02em}
+.brand{display:flex;align-items:center;gap:calc(.8*1.7778vh);font-weight:700;font-size:calc(1.6*1.7778vh);color:#d9d9e3;margin-bottom:3vh}
+.logo{width:calc(2.6*1.7778vh);height:calc(2.6*1.7778vh);border-radius:calc(.7*1.7778vh);background:#ff5c39;display:grid;place-items:center}
+.logo:after{content:"";border-left:calc(.9*1.7778vh) solid #fff;border-top:calc(.6*1.7778vh) solid transparent;border-bottom:calc(.6*1.7778vh) solid transparent;margin-left:calc(.2*1.7778vh)}
+.tag{display:inline-block;background:#ff5c39;color:#fff;font-weight:800;font-size:calc(1.3*1.7778vh);letter-spacing:.08em;text-transform:uppercase;padding:.6vh calc(1*1.7778vh);border-radius:calc(.5*1.7778vh);margin-bottom:2.5vh}
+h1{font-size:calc(4.6*1.7778vh);line-height:1.05;font-weight:850;letter-spacing:-.02em}
 h1 em{font-style:normal;color:#ff5c39}
-p{font-size:1.7vw;line-height:1.4;color:#c9c9d3;margin-top:3vh;max-width:40vw}
+p{font-size:calc(1.7*1.7778vh);line-height:1.4;color:#c9c9d3;margin-top:3vh;max-width:calc(40*1.7778vh)}
 ul{list-style:none;padding:0;display:grid;gap:1.6vh}
-li{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:1vw;padding:1.8vh 1.4vw;font-size:1.45vw;font-weight:600;display:flex;gap:.9vw;align-items:center}
-li b{color:#ff5c39;font-size:1.6vw}
+li{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:calc(1*1.7778vh);padding:1.8vh calc(1.4*1.7778vh);font-size:calc(1.45*1.7778vh);font-weight:600;display:flex;gap:calc(.9*1.7778vh);align-items:center}
+li b{color:#ff5c39;font-size:calc(1.6*1.7778vh)}
 </style></head><body>
 <div class="c"><div><div class="brand"><span class="logo"></span>UGC Playbook Lab</div><span class="tag" id="tag"></span><h1 id="h"></h1><p id="s"></p></div><ul id="l"></ul></div>
 <script>
