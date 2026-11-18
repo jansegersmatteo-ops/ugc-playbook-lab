@@ -1,0 +1,77 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Resume Keyword Checker: Compare Your Resume to a Job Ad</title><meta name="description" content="Free resume keyword checker: paste a job ad and your resume to see which key terms you already cover and which are missing. Runs in your browser, nothing is uploaded."><link rel="canonical" href="https://jansegersmatteo-ops.github.io/ugc-playbook-lab/resume-keyword-checker.html">
+<meta property="og:title" content="Free Resume Keyword Checker: Compare Your Resume to a Job Ad"><meta property="og:description" content="Free resume keyword checker: paste a job ad and your resume to see which key terms you already cover and which are missing. Runs in your browser, nothing is uploaded."><meta property="og:type" content="article">
+<link rel="stylesheet" href="style.css"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Free Resume Keyword Checker: Compare Your Resume to a Job Ad", "description": "Free resume keyword checker: paste a job ad and your resume to see which key terms you already cover and which are missing. Runs in your browser, nothing is uploaded.", "datePublished": "2026-11-18", "dateModified": "2026-11-18", "author": {"@type": "Organization", "name": "UGC Playbook Lab"}, "url": "https://jansegersmatteo-ops.github.io/ugc-playbook-lab/resume-keyword-checker.html"}</script></head><body>
+<header><div class="w"><span class="logo"></span><a href="./">UGC Playbook Lab</a></div></header>
+<main><div class="w"><p class="meta">Updated 2026-11-18 · free tool</p><h1>Resume keyword checker</h1>
+<p>Paste a job ad and your resume. The checker lists the terms the ad repeats most and shows which ones your resume already uses. Everything runs in your browser: nothing is uploaded or stored.</p>
+<style>
+.calc{border:1px solid #e6e6ea;border-radius:14px;padding:20px;margin:24px 0;background:#fafafb}
+.calc label{display:block;font-weight:600;margin:14px 0 4px}
+.calc textarea{width:100%;min-height:170px;padding:10px;border:1px solid #d4d4dc;border-radius:8px;font:inherit;background:#fff;box-sizing:border-box}
+.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc .hint{font-size:.85rem;color:#6b6b78;margin-top:4px}
+.calc button{margin-top:14px}
+.out{background:#111118;color:#fff;border-radius:12px;padding:18px;margin-top:18px}
+.out .big{font-size:2rem;font-weight:800;color:#ff5c39}
+.out ul{margin:8px 0 0;padding-left:18px;color:#c9c9d3;font-size:.92rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{border-radius:999px;padding:3px 10px;font-size:.85rem}
+.tag.ok{background:#1f3b2a;color:#9fe3b5}
+.tag.miss{background:#3b1f1f;color:#ffb3a3}
+@media(max-width:560px){.calc .row{grid-template-columns:1fr}}
+</style>
+<div class="calc" id="calc">
+<div class="row">
+<div><label for="ad">1. Job ad</label><textarea id="ad" placeholder="Paste the full job ad here"></textarea></div>
+<div><label for="cv">2. Your resume</label><textarea id="cv" placeholder="Paste your resume text here"></textarea></div>
+</div>
+<div class="hint">Tip: copy the text from your resume file (Ctrl+A, Ctrl+C). Remove your phone number and address first if you like; the tool does not need them.</div>
+<button class="btn" id="go" type="button">Check my resume</button>
+<div class="out" aria-live="polite" id="out" style="display:none"><div>Key terms from the ad covered by your resume</div><div class="big" id="score"></div>
+<div><strong>Already in your resume</strong></div><div class="tags" id="ok"></div>
+<div style="margin-top:12px"><strong>Missing: add only where it is true</strong></div><div class="tags" id="miss"></div>
+<ul><li>Terms are two-word phrases and single words that the ad uses more than once or puts in the job title.</li><li>This is a reading aid, not an ATS score. Most recruiters read and rank resumes themselves (see below).</li></ul></div>
+</div>
+<script>
+(function(){
+const STOP=new Set("a about above across after again against all also am an and any are as at be because been before being below between both but by can could did do does doing down during each either etc few for from further get had has have having he her here hers him his how i if in into is it its itself just let may me might more most must my no nor not of off on once only or other our ours out over own per please same shall she should so some such than that the their them then there these they this those through to too under until up upon us very via was we were what when where which while who whom why will with within without would you your yours yourself role job candidate candidates team company work working ability able including include includes strong excellent good great well new using use based within year years experience experienced opportunity looking join ideal preferred required requirements responsibilities skills plus key make makes help day days time across like one two three".split(" "));
+const norm=t=>t.toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9+#.\-' ]+/g," ");
+function words(t){return norm(t).split(/\s+/).map(w=>w.replace(/^[.\-']+|[.\-']+$/g,"")).filter(w=>w.length>1&&!/^\d+$/.test(w));}
+function terms(ad){
+ const segs=ad.split(/[.,;:!?\n\u2022()\/|]+/), uni=new Map(), bi=new Map();
+ const head=new Set(words((ad.split("\n").find(l=>l.trim())||"").slice(0,120)));
+ const add=(m,k)=>m.set(k,(m.get(k)||0)+1);
+ segs.forEach(seg=>{const w=words(seg);for(let i=0;i<w.length;i++){if(!STOP.has(w[i]))add(uni,w[i]);if(i+1<w.length&&!STOP.has(w[i])&&!STOP.has(w[i+1]))add(bi,w[i]+" "+w[i+1]);}});
+ const rank=m=>[...m].map(([k,v])=>[k,v+(k.split(" ").every(x=>head.has(x))?1:0)]).filter(([k,v])=>v>=2).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+ const pick=rank(bi).slice(0,12);
+ for(const k of rank(uni)){if(pick.length>=25)break;if(pick.some(p=>p.split(" ").includes(k)))continue;pick.push(k);}
+ return pick;
+}
+function esc(s){return s.replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));}
+document.getElementById("go").addEventListener("click",function(){
+ const ad=document.getElementById("ad").value, cv=" "+words(document.getElementById("cv").value).join(" ")+" ";
+ const t=terms(ad), ok=[], miss=[];
+ t.forEach(k=>(cv.includes(" "+k+" ")?ok:miss).push(k));
+ document.getElementById("out").style.display="block";
+ document.getElementById("score").textContent=t.length?ok.length+" of "+t.length:"Paste a longer job ad";
+ document.getElementById("ok").innerHTML=ok.map(k=>'<span class="tag ok">'+esc(k)+'</span>').join("")||"<span>None yet</span>";
+ document.getElementById("miss").innerHTML=miss.map(k=>'<span class="tag miss">'+esc(k)+'</span>').join("")||"<span>Nothing missing</span>";
+});
+})();
+</script>
+<h2>How to use the result</h2>
+<ul><li><strong>Check the hard requirements first.</strong> A licence, the right to work in the country, a location or shift: if the ad lists one you do not meet, a keyword will not fix it.</li>
+<li><strong>Use the ad's exact words where they are true.</strong> If you did "customer onboarding" but your resume calls it "new client setup", use the ad's term. A recruiter scanning for it, by eye or with a search, finds it faster.</li>
+<li><strong>Add each term once, inside a result.</strong> "Cut customer onboarding time from 10 to 6 days by rewriting the welcome emails" beats a skills list stuffed with every keyword.</li>
+<li><strong>Ignore terms that are not about the job.</strong> The checker is simple: it can pick up company names or generic words. Skip those.</li></ul>
+<h2>Do ATS systems really reject resumes automatically?</h2>
+<p>Mostly not for the reasons you hear online. The often-quoted claim that "75% of resumes are rejected by ATS" has no published study behind it; it is traced to a 2012 sales pitch by Preptel, a resume-optimisation company that closed in 2013.</p>
+<p>What can reject you automatically is documented by the ATS vendors. Greenhouse, for example, lets employers <strong>auto-reject candidates based on their answers to application questions</strong> (on its Plus and Pro plans) and <strong>block repeat applications</strong> within a set number of days. Your font or a keyword count is not on that list.</p>
+<p>In a 2025 survey by the resume company Enhancv, 92% of 25 US recruiters said their ATS does not automatically reject resumes for formatting, design, missing keywords or a low match score. The survey is small and comes from a company that sells resume help, but it matches the vendor documentation. Recruiters said clear, skimmable structure (92%), relevant experience (88%) and tailoring without keyword stuffing (76%) help a resume advance.</p>
+<h2>Does tailoring pay off?</h2>
+<p>The job tracker Huntr compared its users' applications from October 2024 to June 2026: tailored resumes were marked "interviewed" in 5.71% of applications, untailored ones in 3.09%. Huntr notes these are descriptive figures from its own users, not proof of cause and effect, so read them as a signal, not a promise.</p>
+<h2>Next step</h2><p>Browse <a href="./">all free guides</a>. A full step-by-step resume ebook with templates and AI prompts is in the works at UGC Playbook Lab.</p>
+<div class="cta"><h3>Free: 50 AI prompts</h3><p>Our free prompt pack shows how to brief AI step by step. The same method works for rewriting resume bullets.</p><a class="btn" href="https://whop.com/ugc-playbook-lab/free-50-ai-prompts-for-ugc/">Get the free prompt pack</a></div>
+<h2>Sources</h2><ul class='src'><li><a href='https://support.greenhouse.io/hc/en-us/articles/203105595-Application-Rules-Overview' rel='nofollow noopener'>Greenhouse: Application Rules Overview</a></li><li><a href='https://support.greenhouse.io/hc/en-us/articles/24412757660443-Set-application-limits-for-job-posts' rel='nofollow noopener'>Greenhouse: Set application limits for job posts</a></li><li><a href='https://itbrief.co.uk/story/study-reveals-ats-rarely-auto-rejects-cvs-debunks-75-myth' rel='nofollow noopener'>IT Brief: Enhancv study on ATS auto-rejection (Nov 2025)</a></li><li><a href='https://blog.theinterviewguys.com/?p=1967' rel='nofollow noopener'>The Interview Guys: where the 75% claim came from</a></li><li><a href='https://huntr.co/research/job-search-trends-q2-2026' rel='nofollow noopener'>Huntr: Job Search Trends Report Q2 2026</a></li></ul></div></main>
+<footer><div class="w">UGC Playbook Lab · honest, sourced guides · <a href="./">All guides</a> · <a href="affiliates.html">Affiliates</a><br>No guarantees: this tool is a reading aid and cannot predict interviews or hiring decisions.</div></footer></body></html>
