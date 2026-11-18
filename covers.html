@@ -23,8 +23,10 @@ const P={
 kdp:{tag:"Ebook · 2026 rules",h:"Publish your first Kindle ebook <em>without rejection</em>",s:"Every rule checked against Amazon's own KDP help pages.",l:["AI disclosure, explained","Formatting that passes review","Metadata do's and don'ts","Royalties & KDP Select","Pre-upload checklist"]},
 playbook:{tag:"Course · 14 days",h:"The AI UGC Creator <em>Playbook</em>",s:"From zero to a portfolio, a rate card and 20 brand pitches.",l:["Scripts & hooks with AI","3 spec videos, no clients","Real 2026 rate data","Pitch templates","Final quiz & certificate"]},
 free:{tag:"Free download",h:"50 AI prompts for <em>UGC creators</em>",s:"Hooks, scripts and brand pitches, plus your first script in 15 minutes.",l:["Hook prompts","Script prompts","Pitch prompts","Your first UGC script","Free, no card needed"]},
-pricing:{tag:"Kit · 10 lessons",h:"UGC Pricing & <em>Negotiation</em> Kit",s:"Know what to answer when a brand asks: what's your rate?",l:["Floor, target & walk-away price","Rate card with add-ons","Usage-rights pricing formula","5 negotiation scripts","Quote template & red flags"]}};
+pricing:{tag:"Kit · 10 lessons",h:"UGC Pricing & <em>Negotiation</em> Kit",s:"Know what to answer when a brand asks: what's your rate?",l:["Floor, target & walk-away price","Rate card with add-ons","Usage-rights pricing formula","5 negotiation scripts","Quote template & red flags"]},
+resume:{tag:"Ebook · 8 chapters",h:"The Honest <em>Resume</em> Guide",s:"What ATS systems really reject, and a 20-minute routine to tailor every application.",l:["What ATS really rejects","A format every system reads","Bullets that prove results","20-minute tailoring with AI","Tracker & troubleshooting"]}};
 const k=new URLSearchParams(location.search).get("p")||"kdp",d=P[k]||P.kdp;
 document.getElementById("tag").textContent=d.tag;document.getElementById("h").innerHTML=d.h;document.getElementById("s").textContent=d.s;
 document.getElementById("l").innerHTML=d.l.map((x,i)=>"<li><b>"+String(i+1).padStart(2,"0")+"</b>"+x+"</li>").join("");
 </script></body></html>
+
